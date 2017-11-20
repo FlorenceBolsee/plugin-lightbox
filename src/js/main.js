@@ -1,21 +1,53 @@
 $(window).click(function(){
-  $(".popup").fadeOut(400);
-  $("main").removeClass("blur")
+  $(".lightbox").fadeOut(400);
+  $(".overlay").removeClass("blur");
 });
-$("section a").click(function(e){
+$(".conteneur-img a").click(function(e){
   e.stopPropagation();
-  $(".popup").fadeIn(500);
-  $("main").addClass("blur");
+  var address = $(this).data("address");
+  $(".img-full").attr("src", address);
+  $(".lightbox").fadeIn(500);
+  $(".overlay").addClass("blur");
 });
 $(".close").click(function(){
-  $(".popup").fadeOut(500);
-  $("main").removeClass("blur");
+  $(".lightbox").fadeOut(500);
+  $(".overlay").removeClass("blur");
 });
 
 $(document).keyup(function(e){
   if(e.keyCode == 27){
-    $(".popup").fadeOut(500);
-    $("main").removeClass("blur");
+    $(".lightbox").fadeOut(500);
+    $(".overlay").removeClass("blur");
   }
 
 });
+
+// effet hover et focus sur les preview
+
+$(".conteneur-img a").on("mouseenter",
+  function(){
+    var $this = $(this);
+    $this.addClass("shadow");
+  }
+);
+
+$(".conteneur-img a").on("mouseleave",
+  function(){
+    var $this = $(this);
+    $this.removeClass("shadow");
+  }
+);
+
+$(".conteneur-img a").on("focus",
+  function(){
+    var $this = $(this);
+    $this.addClass("shadow");
+  }
+);
+
+$(".conteneur-img a").on("blur",
+  function(){
+    var $this = $(this);
+    $this.removeClass("shadow");
+  }
+);
