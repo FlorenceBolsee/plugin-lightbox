@@ -46,10 +46,12 @@ var lightbox = {
   address: undefined,
   id: undefined,
   title: undefined,
+  opened: false,
 
   modaleOut: function(){
     $(".lightbox").fadeOut(500);
     $(".overlay").removeClass("blur");
+    this.opened = false;
   },
 
   modaleIn: function(){
@@ -61,14 +63,25 @@ var lightbox = {
     $(".lightbox").fadeIn(500);
     $(".overlay").addClass("blur");
     $(".gallery-title").text(lightbox.title);
+    lightbox.opened = true;
   },
 
   lightboxOpening: function(){
     $(".conteneur-img a").on("click", this.modaleIn);
+    $(".conteneur-img a").keyup(function(e){
+      if(e.keyCode == 13 && this.opened == false){
+        this.modaleIn();
+      }
+    }.bind(this));
   },
 
-  lightboxClosing: function(){
+  lightboxClosing: function(e){
     $(".overlay, .close").on("click", this.modaleOut);
+    $(document).keyup(function(e){
+      if(e.keyCode == 27){
+        this.modaleOut();
+      }
+    }.bind(this));
   },
 
   // effet boxShadow
@@ -83,8 +96,10 @@ var lightbox = {
     $this.removeClass("shadow");
   },
   shadowEffect: function(){
-    $(".conteneur-img a").on("mouseenter", lightbox.boxShadowIn);
-    $(".conteneur-img a").on("mouseleave", lightbox.boxShadowOut);
+    $(".conteneur-img a").on("mouseenter", this.boxShadowIn);
+    $(".conteneur-img a").on("focus", this.boxShadowIn);
+    $(".conteneur-img a").on("mouseleave", this.boxShadowOut);
+    $(".conteneur-img a").on("blur", this.boxShadowOut);
   },
 
   // gallery
@@ -96,7 +111,6 @@ var lightbox = {
       function(){
         if($(this).data("id") > idMax){
           idMax = $(this).data("id");
-          console.log(idMax);
         }
         if($(this).data("id") < idMin){
           idMin = $(this).data("id");
@@ -125,6 +139,11 @@ var lightbox = {
     this.lightboxClosing();
     this.shadowEffect();
     $(".img-full").on("click", this.slider.bind(this));
+    $(document).keydown(function(e){
+      if(e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 39){
+        this.slider();
+      }
+    }.bind(this));
   }
 
 };
