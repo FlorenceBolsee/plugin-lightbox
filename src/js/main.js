@@ -54,25 +54,25 @@ var lightbox = {
     this.opened = false;
   },
 
-  modaleIn: function(){
-    lightbox.gallery = ".gallery" + $(this).data("gallery");
-    lightbox.address = $(this).data("address");
-    lightbox.id = $(this).data("id");
-    lightbox.title = "Gallery " + $(this).data("gallery");
-    $(".img-full").attr("src", lightbox.address);
+  modaleIn: function(ev){
+    this.gallery = ".gallery" + $(ev.currentTarget).data("gallery");
+    this.address = $(ev.currentTarget).data("address");
+    this.id = $(ev.currentTarget).data("id");
+    this.title = "Gallery " + $(ev.currentTarget).data("gallery");
+    $(".img-full").attr("src", this.address);
     $(".lightbox").fadeIn(500);
     $(".overlay").addClass("blur");
-    $(".gallery-title").text(lightbox.title);
-    lightbox.opened = true;
+    $(".gallery-title").text(this.title);
+    this.opened = true;
   },
 
   lightboxOpening: function(){
-    $(".conteneur-img a").on("click", this.modaleIn);
+    $(".conteneur-img a").on("click", this.modaleIn.bind(this));
     $(".conteneur-img a").keyup(function(e){
       if(e.keyCode == 13 && this.opened == false){
-        this.modaleIn();
+        this.modaleIn.bind(this);
       }
-    }.bind(this));
+    });
   },
 
   lightboxClosing: function(e){
@@ -85,9 +85,9 @@ var lightbox = {
   },
 
   // effet boxShadow
-  boxShadowIn: function(){
-    var $this = $(this);
-    $this.css('box-shadow', lightbox.boxShadow);
+  boxShadowIn: function(ev){
+    var $this = $(ev.currentTarget);
+    $this.css('box-shadow', this.boxShadow);
     $this.addClass("shadow");
   },
   boxShadowOut: function(target){
@@ -96,8 +96,8 @@ var lightbox = {
     $this.removeClass("shadow");
   },
   shadowEffect: function(){
-    $(".conteneur-img a").on("mouseenter", this.boxShadowIn);
-    $(".conteneur-img a").on("focus", this.boxShadowIn);
+    $(".conteneur-img a").on("mouseenter", this.boxShadowIn.bind(this));
+    $(".conteneur-img a").on("focus", this.boxShadowIn.bind(this));
     $(".conteneur-img a").on("mouseleave", this.boxShadowOut);
     $(".conteneur-img a").on("blur", this.boxShadowOut);
   },
@@ -106,6 +106,7 @@ var lightbox = {
   slider: function(){
     var idMax = this.id;
     var idMin = this.id;
+    var lightboxAddress = this.address;
 
     $(this.gallery).each(
       function(){
@@ -122,11 +123,14 @@ var lightbox = {
     } else if (this.id == idMax) {
       this.id = idMin;
     }
+    var lightboxId = this.id;
     $(".conteneur-img a").each(
-      function(){
-        if($(this).data("id") == lightbox.id){
-          lightbox.address = $(this).data("address");
-          $(".img-full").attr("src", lightbox.address);
+      function(ev){
+        var linkId = $(this).data("id");
+        var linkAddress = $(this).data("address");
+        if(linkId == lightboxId){
+          lightboxAddress = linkAddress;
+          $(".img-full").attr("src", lightboxAddress);
         }
       }
     );
@@ -138,12 +142,13 @@ var lightbox = {
     this.lightboxOpening();
     this.lightboxClosing();
     this.shadowEffect();
+    console.log(this);
     $(".img-full").on("click", this.slider.bind(this));
     $(document).keydown(function(e){
       if(e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 39){
-        this.slider();
+        this.slider.bind(this);
       }
-    }.bind(this));
+    });
   }
 
 };
