@@ -6,17 +6,26 @@ html {
 }
 
 body {
-  background-color: #333;
   text-align: center;
 }
+
+h1 {
+  padding: 50px;
+}
+
+// preview block
 
 .conteneur-img {
   display: flex;
   flex-flow: wrap;
+  justify-content: center;
   max-width: 800px;
   max-height: 400px;
-  width: calc(100vw - 2rem);
-  height: calc(50vw - 1rem);
+  width: calc(100vw - 20px);
+  height: calc(50vw - 10px);
+  @media screen and (max-width: 480px) {
+    height: calc(200vw - 40px);
+  }
   margin: 0 auto;
 
   a {
@@ -24,6 +33,9 @@ body {
     max-height: 200px;
     width: 25%;
     height: 50%;
+    @media screen and (max-width: 480px) {
+      width: 50%;
+    }
     overflow: hidden;
     position: relative;
     outline: none;
@@ -42,9 +54,9 @@ body {
 
 
 
-// effet focus et hover sur les images preview
+// box-shadow
 
-a.shadow {
+.shadow {
   box-shadow: 0 0 20px #000;
   z-index: 100;
 }
@@ -62,6 +74,10 @@ a.shadow {
   left: 50%;
   transform: translate(-50%, -50%);
   overflow: hidden;
+  @media screen and (max-width: 480px) {
+    width: 90vw;
+    height: 60vw;
+  }
 }
 
 .overlay {
@@ -85,10 +101,29 @@ a.shadow {
 
 .img-full {
   width: 100%;
+  min-height: 100%;
+  object-fit: cover;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  cursor: pointer;
+}
+
+.gallery-title {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: #fff;
+  text-align: center;
+  font-size: 32px;
+
+  @media screen and (max-width: 480px) {
+    font-size: 22px;
+  }
 }
 
   // bouton close
@@ -105,18 +140,18 @@ a.shadow {
     border-radius: 2px;
   }
 
-  .close:before, .close:after {
-    position: absolute;
-    left: 15px;
-    content: ' ';
+  .close-crossbar {
+    display: block;
     height: 33px;
     width: 2px;
     background-color: #333;
     border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
   }
-  .close:before {
-    transform: rotate(45deg);
-  }
-  .close:after {
-    transform: rotate(-45deg);
+
+  .number2 {
+    transform: translate(-50%, -50%) rotate(-45deg);
   }
