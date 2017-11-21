@@ -142,13 +142,12 @@ var lightbox = {
     this.lightboxOpening();
     this.lightboxClosing();
     this.shadowEffect();
-    console.log(this);
     $(".img-full").on("click", this.slider.bind(this));
     $(document).keydown(function(e){
       if(e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 39){
-        this.slider.bind(this);
+        this.slider();
       }
-    });
+    }.bind(this));
   }
 
 };
